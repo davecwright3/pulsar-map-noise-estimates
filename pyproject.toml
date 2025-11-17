@@ -1,9 +1,9 @@
 [project]
 authors = [{name = "David Wright", email = "dcw3.dev@gmail.com"}]
-dependencies = []
 name = "pulsar-map-noise-estimates"
 requires-python = ">= 3.11"
 version = "0.1.0"
+dependencies = [ "jax>=0.8.0,<0.9", "numpyro>=0.19.0,<0.20", "optax>=0.2.6,<0.3"]
 
 [build-system]
 build-backend = "hatchling.build"
@@ -20,3 +20,6 @@ pulsar_map_noise_estimates = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 python = "3.13.*"
+loguru = ">=0.7.3,<0.8"
+pint-pulsar = ">=1.1.4,<2"
+numpy = ">=2.3.5,<3"

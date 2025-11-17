@@ -1,0 +1,16 @@
+name: default
+channels:
+- conda-forge
+- nodefaults
+dependencies:
+- python 3.13.*
+- loguru >=0.7.3,<0.8
+- pint-pulsar >=1.1.4,<2
+- numpy >=2.3.5,<3
+- pip
+- pip:
+  - -e .
+  - jax>=0.8.0, <0.9
+  - numpyro>=0.19.0, <0.20
+  - optax>=0.2.6, <0.3
+
