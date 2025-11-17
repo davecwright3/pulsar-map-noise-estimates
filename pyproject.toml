@@ -1,0 +1,22 @@
+[project]
+authors = [{name = "David Wright", email = "dcw3.dev@gmail.com"}]
+dependencies = []
+name = "pulsar-map-noise-estimates"
+requires-python = ">= 3.11"
+version = "0.1.0"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+[tool.pixi.pypi-dependencies]
+pulsar_map_noise_estimates = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+python = "3.13.*"
