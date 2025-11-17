@@ -41,6 +41,8 @@ max_num_samples = 50_000
 batch_size = 1_000
 
 rng_key = random.key(117)
+
+guide = numpyro.infer.autoguide.AutoDelta(model)
 svi = setup_svi(model, guide, max_epochs=max_num_samples, num_warmup_steps=batch_size)
 params = run_svi_early_stopping(
     rng_key,
@@ -48,7 +50,9 @@ params = run_svi_early_stopping(
     batch_size = batch_size,
     max_num_batches = max_num_samples // batch_size
     )
-
+# Post-process params
+# I don't do it manually because you may choose a different guide and the output could be different
+params  = {key.removesuffix("_auto_loc"): value for key, value in params.items()}
 # Add estimated noise parameters to timing model
 updated_model = add_noise_to_model(timing_model, noise_dict)
 ```

@@ -95,7 +95,7 @@ def setup_svi(
 def run_training_batch(
     svi: SVI,
     svi_state: SVIState,
-    rng_key: random.PRNGKey,
+    rng_key: jax.Array,
     batch_size: int,
 ) -> SVIState:
     """
@@ -110,7 +110,7 @@ def run_training_batch(
         NumPyro SVI object containing the model, guide, and optimizer.
     svi_state : SVIState
         Current state of the SVI optimizer.
-    rng_key : random.PRNGKey
+    rng_key : jax.Array
         JAX random number generator key.
     batch_size : int
         Number of SVI update steps to run.
@@ -144,7 +144,7 @@ def run_training_batch(
 def run_training_batch_with_diagnostics(
     svi: SVI,
     svi_state: SVIState,
-    rng_key: random.PRNGKey,
+    rng_key: jax.Array,
     batch_size: int,
 ) -> tuple[SVIState, jnp.ndarray, jnp.ndarray]:
     """
@@ -159,7 +159,7 @@ def run_training_batch_with_diagnostics(
         NumPyro SVI object containing the model, guide, and optimizer.
     svi_state : SVIState
         Current state of the SVI optimizer.
-    rng_key : random.PRNGKey
+    rng_key : jax.Array
         JAX random number generator key.
     batch_size : int
         Number of SVI update steps to run.
@@ -201,7 +201,7 @@ def run_training_batch_with_diagnostics(
 
 
 def run_svi_early_stopping(
-    rng_key: random.PRNGKey,
+    rng_key: jax.Array,
     svi: SVI,
     batch_size: int = 1000,
     patience: int = 3,
@@ -217,7 +217,7 @@ def run_svi_early_stopping(
 
     Parameters
     ----------
-    rng_key : random.PRNGKey
+    rng_key : jax.Array
         JAX random number generator key.
     svi : SVI
         NumPyro SVI object containing the model, guide, and optimizer.
@@ -247,7 +247,7 @@ def run_svi_early_stopping(
     Examples
     --------
     >>> from jax import random
-    >>> rng_key = random.PRNGKey(0)
+    >>> rng_key = jax.Array(0)
     >>> svi = setup_svi(model, guide)
     >>> params = run_svi_early_stopping(rng_key, svi, batch_size=1000, patience=3)
     """
@@ -281,10 +281,10 @@ def run_svi_early_stopping(
         # Early stopping logic
         logger.info(f"{current_val_loss=}")
         logger.info(f"{best_val_loss=}")
-        ratio = current_val_loss - best_val_loss if batch_num >= 1 else -np.inf
-        if ratio < -1:
+        difference = current_val_loss - best_val_loss if batch_num >= 1 else -np.inf
+        if difference < -1:
             logger.info(
-                f"Loss improved from {best_val_loss:.4f} to {current_val_loss:.4f} {ratio=}. Saving state.",
+                f"Loss improved from {best_val_loss:.4f} to {current_val_loss:.4f} {difference=}. Saving state.",
             )
             best_val_loss = current_val_loss
             best_svi_state = svi_state
@@ -292,7 +292,7 @@ def run_svi_early_stopping(
         else:
             patience_counter += 1
             logger.info(
-                f"Loss did not improve. Patience: {patience_counter}/{patience} {ratio=}",
+                f"Loss did not improve. Patience: {patience_counter}/{patience} {difference=}",
             )
 
             if patience_counter >= patience:
