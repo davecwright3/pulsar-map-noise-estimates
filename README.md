@@ -29,6 +29,8 @@ However, I've provided a conda `environment.yml` exported from pixi if you'd lik
 
 ## Usage
 
+Below, I assume you have configured a NumPyro `model` using a discovery likelihood.
+
 ```python
 from jax import random
 from pulsar_map_noise_estimates.map_noise_estimate import setup_svi, run_svi_early_stopping
