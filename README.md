@@ -29,7 +29,7 @@ However, I've provided a conda `environment.yml` exported from pixi if you'd lik
 
 ## Usage
 
-Below, I assume you have configured a NumPyro `model` using a discovery likelihood.
+Below, I assume you have configured a NumPyro `model` using a discovery likelihood and a PINT timing model.
 
 ```python
 from jax import random
@@ -54,5 +54,5 @@ params = run_svi_early_stopping(
 # I don't do it manually because you may choose a different guide and the output could be different
 params  = {key.removesuffix("_auto_loc"): value for key, value in params.items()}
 # Add estimated noise parameters to timing model
-updated_model = add_noise_to_model(timing_model, noise_dict)
+updated_model = add_noise_to_model(timing_model, params)
 ```
